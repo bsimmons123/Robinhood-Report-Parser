@@ -123,7 +123,7 @@ def main(chosen_file):
     pretty_date = datetime.now().strftime('%m-%d-%Y')
 
     csv_dir = 'output'
-    csv_name = 'full_average_stocks_data_' + str(input_start_date.strftime('%m-%d-%Y')) + '_to_' + str(
+    csv_name = 'average_stocks_data_' + str(input_start_date.strftime('%m-%d-%Y')) + '_to_' + str(
         input_end_date.strftime('%m-%d-%Y')) + '_stocks_data_' + str(pretty_date) + '.csv'
     csv_path = os.path.join(csv_dir, csv_name)
 

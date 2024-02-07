@@ -111,7 +111,7 @@ elif action == '3':
     pretty_date = datetime.now().strftime('%m-%d-%Y')
 
     csv_dir = 'output'
-    csv_name = 'ind_average_stocks_data_' + str(pretty_date) + '.csv'
+    csv_name = 'total_average_stocks_data_' + str(pretty_date) + '.csv'
     csv_path = os.path.join(csv_dir, csv_name)
 
     # Create directory if it doesn't exist
