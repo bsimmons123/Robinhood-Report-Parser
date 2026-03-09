@@ -1,7 +1,6 @@
 import os
 
 import pandas as pd
-import datetime
 from datetime import datetime
 
 
@@ -25,17 +24,16 @@ def main(chosen_file):
     prev_year = (today - pd.DateOffset(years=1)).normalize().strftime(input_format)
 
     def get_validated_date(input_prompt, default_date):
-        date_str = input(input_prompt)
-        if not date_str:
-            date_str = default_date
-        if isinstance(date_str, datetime):
-            return date_str
-        try:
-            print(date_str)
-            return datetime.strptime(date_str, input_format)
-        except ValueError:
-            print("Invalid date format. Should be YYYY-MM-DD")
-            return get_validated_date(input_prompt, default_date)
+        while True:
+            date_str = input(input_prompt)
+            if not date_str:
+                date_str = default_date
+            if isinstance(date_str, datetime):
+                return date_str
+            try:
+                return datetime.strptime(date_str, input_format)
+            except ValueError:
+                print("Invalid date format. Should be YYYY-MM-DD")
 
     # Loop until 'input_start_date' is a valid date
     while True:
@@ -45,7 +43,7 @@ def main(chosen_file):
             str(prev_year))
         try:
             confirm = input(f"You entered {input_start_date.strftime('%Y-%m-%d')}, is this correct? (Yes/No): ")
-            if confirm.lower() == 'yes':
+            if confirm.lower() in ('yes', 'y'):
                 break
         except ValueError:
             print(f"'{input_start_date}' is not a valid date. Please enter a valid date in the YYYY-MM-DD format.")
@@ -58,14 +56,10 @@ def main(chosen_file):
             str(today.strftime('%Y-%m-%d')))
         try:
             confirm = input(f"You entered {input_end_date.strftime('%Y-%m-%d')}, is this correct? (Yes/No): ")
-            if confirm.lower() == 'yes':
+            if confirm.lower() in ('yes', 'y'):
                 break
         except ValueError:
             print(f"'{input_end_date}' is not a valid date. Please enter a valid date in the YYYY-MM-DD format.")
-
-    # Convert 'input_start_date' and 'input_end_date' to datetime
-    start_date = pd.to_datetime(input_start_date)
-    end_date = pd.to_datetime(input_end_date)
 
     # Keep only rows where 'Trans Code' is 'Buy'
     df = df[df['Trans Code'] == 'Buy']
@@ -85,10 +79,7 @@ def main(chosen_file):
     df['Total Paid'] = df['Price'] * df['Quantity']
 
     # Create a 'Purchase Price' column for 'Buy' transactions based on 'Amount'
-    df['Purchase Price'] = df.loc[df['Trans Code'] == 'Buy', 'Amount']
-
-    # Filter rows where 'Activity Date' is within the range specified by user
-    df = df[(df['Activity Date'] >= input_start_date) & (df['Activity Date'] <= input_end_date)]
+    df['Purchase Price'] = df['Amount']
 
     # Create new dataframe to store results
     result = df[['Activity Date', 'Process Date', 'Settle Date', 'Instrument', 'Description', 'Quantity', 'Price',

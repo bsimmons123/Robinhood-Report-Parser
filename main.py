@@ -66,7 +66,7 @@ elif action == '3':
     df['Activity Date'] = pd.to_datetime(df['Activity Date'])
 
     # Convert 'Price' and 'Quantity' column to numeric type to handle calculations
-    price = df['Price'].replace('\$', '', regex=True).replace(',', '', regex=True)
+    price = df['Price'].replace('[\$,]', '', regex=True)
     df['Price'] = pd.to_numeric(price)
     df['Quantity'] = pd.to_numeric(df['Quantity'])
 
@@ -102,8 +102,7 @@ elif action == '3':
 
     data.reset_index(level=0, inplace=True)
 
-    # Convert the dictionary with data into a DataFrame
-    result = pd.DataFrame(data)
+    result = data
 
     # Print the result
     print(result)
